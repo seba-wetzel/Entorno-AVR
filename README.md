@@ -20,7 +20,7 @@ Se incluye una libreria para el manejo de los puertos I/O con funciones similare
 La diferencia es que esta funciones son agnosticas a la placa, es de mas bajo nivel, ya que se maneja con el puerto y pin del microcontrolador.
 Ej:
   
-| Columna 1                          | Columna 2                               |
+|   Arduino                          |  Libreria en C                          |
 | -----------------------------------| ----------------------------------------|
 | Celda 1, digitalWrite(13,HIGH);    | Celda 2, digitalWrite(B,5,HIGH);        |
 | Celda 3, pinMode(5,INPUT);         | Celda 3, pinMode(D,5,INPUT);            |
