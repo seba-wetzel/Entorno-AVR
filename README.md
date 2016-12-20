@@ -17,7 +17,7 @@ Cuenta con un Makefile para compilacion y carga del programa en el microcontrola
 ## Libreria "simil arduino" en C
 
 Se incluye una libreria para el manejo de los puertos I/O con funciones similares a las de arduino.
-La diferencia es que esta funciones son agnosticas a la placa, es de mas bajo nivel, ya que se maneja con el puerto y pin del microcontrolador.
+La diferencia es que estas funciones son agnosticas a la placa, son de mas bajo nivel, ya que se manejan con el puerto y pin del microcontrolador.
 
 Ej:
   
