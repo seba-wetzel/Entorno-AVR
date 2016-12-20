@@ -1,16 +1,16 @@
 # Variables del microprocesador elegido
 MCU=atmega328p
 F_CPU=16000000
-
+ARCH=avr
 # Variables de programacion (el baudrate depende del bootloader del arduino usado)
 PORT=/dev/ttyACM0
 BRATE=115200
 
 # Variables de compilador
-CC=avr-gcc
-OBJCOPY=avr-objcopy
+CC=$(TOOLS_PATH)/avr-gcc
+OBJCOPY=$(TOOLS_PATH)/avr-objcopy
 CFLAGS=-std=c11 -Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU}
-SIZE=avr-size
+SIZE=$(TOOLS_PATH)/avr-size
 SFLAGS=-C 
 
 # Variables para generar el nombre del binario
@@ -24,6 +24,7 @@ OUT_PATH := out
 OBJ_PATH := $(OUT_PATH)/obj
 SOURCES := $(wildcard $(SRC_PATH)/*.c)
 CONF_PATH= $(shell pwd)/conf
+TOOLS_PATH= $(shell pwd)/tools/$(ARCH)/bin
 OBJS := $(subst $(SRC_PATH),$(OBJ_PATH),$(SOURCES:.c=.o))
 OBJ_FILES := $(notdir $(OBJS))
 vpath %.c $(SRC_PATH)
