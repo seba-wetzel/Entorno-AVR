@@ -6,12 +6,12 @@ Cuenta con un Makefile para compilacion y carga del programa en el microcontrola
 ###Como se usa:
   1. Trabajar sobre el archivos /src/main.c
   2. Colocar todos los .h creados por el usuario en la carpeta /inc
-  3. Abrir una terminal en la caepta principal o raiz del proyecto
+  3. Abrir una terminal en la carpeta principal o raiz del proyecto
   4. Ejecutar el comando make
   5. Ejecutar "sudo make flash" (sin las comillas) para cargar el programa en el microcontrolador.*
   
   
-*Por el momento el Makefile solo cargar el programa en una placa arduino usando el bootloader integrado, se estara dando soporte a programadores externos (USBasp).
+*_Por el momento el Makefile solo cargar el programa en una placa arduino usando el bootloader integrado, se estara dando soporte a programadores externos (USBasp)._
 
 
 ## Libreria "simil arduino" en C
