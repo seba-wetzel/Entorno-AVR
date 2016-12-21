@@ -16,10 +16,10 @@ void serialBegin(void) {
     UBRR0H = UBRRH_VALUE;
     UBRR0L = UBRRL_VALUE;
 
-    UCSR0C = _BV(UCSZ01) | _BV(UCSZ00); /* 8-bit data */ 
-    UCSR0B = _BV(RXEN0) | _BV(TXEN0);   /* Enable RX and TX */ 
+    UCSR0C = _BV(UCSZ01) | _BV(UCSZ00); /* 8-bit data */
+    UCSR0B = _BV(RXEN0) | _BV(TXEN0);   /* Enable RX and TX */
     stdout = &uart_output;
-    stdin  = &uart_input;   
+    stdin  = &uart_input;
 }
 
 int uart_putchar(char c, FILE *cadena) {
@@ -53,7 +53,7 @@ estado_u digitalRead (port_u puerto,const int pin){
 
  switch (puerto)
  {
- case B: if(PINB & (1 << pin)){ 
+ case B: if(PINB & (1 << pin)){
 		return HIGH;
 }
 	else{
@@ -61,14 +61,14 @@ estado_u digitalRead (port_u puerto,const int pin){
 }
 
  break;
- case C: if(PINC & (1 << pin)){ 
+ case C: if(PINC & (1 << pin)){
 		return HIGH;
 }
 	else{
 		return LOW;
 }
  break;
- case D: if(PIND & (1 << pin)){ 
+ case D: if(PIND & (1 << pin)){
 		return HIGH;
 }
 	else{
@@ -76,7 +76,7 @@ estado_u digitalRead (port_u puerto,const int pin){
 }
  break;
  }
-
+return LOW;
 }
 
 void pinMode (port_u puerto,const int pin, IO_u tipo){

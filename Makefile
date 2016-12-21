@@ -11,7 +11,7 @@ CC=$(TOOLS_PATH)/avr-gcc
 OBJCOPY=$(TOOLS_PATH)/avr-objcopy
 CFLAGS=-std=c11 -Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU}
 SIZE=$(TOOLS_PATH)/avr-size
-SFLAGS=-C 
+SFLAGS=-C
 
 # Variables para generar el nombre del binario
 EJECUTABLE := $(notdir $(shell pwd))
@@ -34,7 +34,7 @@ vpath %.o $(OBJ_PATH)
 all: $(TARGET)
 
 #regla de linkeo y generacion de direcctorios de salida (si no existen)
-$(TARGET): $(OBJ_PATH) 
+$(TARGET): $(OBJ_PATH)
 	${CC} ${CFLAGS} -I $(INC_PATH) -o $(OUT_PATH)/$(TARGET).bin  ${SOURCES}
 	${OBJCOPY} -j .text -j .data -O ihex $(OUT_PATH)/$(TARGET).bin  $(OUT_PATH)/${TARGET}.hex
 	${SIZE} ${SFLAGS} $(OUT_PATH)/$(TARGET).bin
@@ -50,10 +50,9 @@ info:
 
 
 flash:
-	avrdude -C $(CONF_PATH)/avrdude.conf -v -p ${MCU} -c arduino -P ${PORT} -b ${BRATE} -D -U flash:w:$(OUT_PATH)/${TARGET}.hex:i 
+	avrdude -C $(CONF_PATH)/avrdude.conf -v -p ${MCU} -c arduino -P ${PORT} -b ${BRATE} -D -U flash:w:$(OUT_PATH)/${TARGET}.hex:i
 
 #pre-requisito para poder compilar, es que existan los directorios de salida, si no existen, se crean
 $(OBJ_PATH):
-	mkdir -p $(OUT_PATH) 
+	mkdir -p $(OUT_PATH)
 	mkdir -p $(OBJ_PATH)
-
