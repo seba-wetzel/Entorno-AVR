@@ -12,10 +12,10 @@
 #include <inttypes.h>
 #include "onewire.h"
 
-#define DS18B20_ERROR_OK 	0
-#define DS18B20_ERROR_COMM	1
-#define DS18B20_ERROR_CRC 	2
-#define DS18B20_ERROR_PULL 	3
+#define DS18B20_ERROR_OK  0
+#define DS18B20_ERROR_COMM  1
+#define DS18B20_ERROR_CRC   2
+#define DS18B20_ERROR_PULL  3
 #define DS18B20_ERROR_OTHER 4
 #define DS18B20_OK DS18B20_ERROR_OK
 
@@ -38,7 +38,7 @@ extern uint8_t ds18b20convert( volatile uint8_t *port, volatile uint8_t *directi
 extern uint8_t ds18b20rsp( volatile uint8_t *port, volatile uint8_t *direction, volatile uint8_t *portin, uint8_t mask, uint8_t *rom, uint8_t *sp );
 extern uint8_t ds18b20wsp( volatile uint8_t *port, volatile uint8_t *direction, volatile uint8_t *portin, uint8_t mask, uint8_t *rom, uint8_t th, uint8_t tl, uint8_t conf );
 extern uint8_t ds18b20csp( volatile uint8_t *port, volatile uint8_t *direction, volatile uint8_t *portin, uint8_t mask, uint8_t *rom );
-extern uint8_t ds18b20read( volatile uint8_t *port, volatile uint8_t *direction, volatile uint8_t *portin, uint8_t mask, uint8_t *rom, int16_t *temperature ) ;
+extern uint8_t ds18b20read( volatile uint8_t *port, volatile uint8_t *direction, volatile uint8_t *portin, uint8_t mask, uint8_t *rom, int16_t *temperature );
 extern uint8_t ds18b20rom( volatile uint8_t *port, volatile uint8_t *direction, volatile uint8_t *portin, uint8_t mask, uint8_t *rom );
 
 #endif
