@@ -11,7 +11,9 @@ Cuenta con un Makefile para compilacion y carga del programa en el microcontrola
   5. Ejecutar "sudo make flash" (sin las comillas) para cargar el programa en el microcontrolador.*
 
 
-*_Por el momento el Makefile solo carga  el programa en una placa arduino usando el bootloader integrado, se estara dando soporte a programadores externos (USBasp)._
+*Hay que modificar el makefile con las configuraciones propias, por ejemplo el puerto serie a utilizar y el programador.
+De usar un USBasp primero hay que instalar las reglas con el comando "make install"
+de esta manera se crea un puerto especial usbasp. 
 
 
 ## Libreria "simil arduino" en C
