@@ -3,10 +3,11 @@ MCU=atmega328p
 F_CPU=16000000
 ARCH=avr
 # Variables de programacion (el baudrate depende del bootloader del arduino usado)
-PORT=/dev/USBasp
 BRATE=115200
 # Variable del programador usado, este puede ser un arduino como un usbasp
-PROGRAMER= usbasp
+PROGRAMER= arduino
+# Puerto serie creado por el programador (la regla udev de usbasp genera un puerto serie en /dev/usbasp )
+PORT=/dev/ttyUSB0
 
 # Variables de compilador
 CC=$(TOOLS_PATH)/avr-gcc
@@ -52,7 +53,15 @@ info:
 
 # Regla para flashar el micro con el programador seleccionado
 flash:
-	avrdude -C $(CONF_PATH)/avrdude.conf -v -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -D -U flash:w:$(OUT_PATH)/${TARGET}.hex:i
+	if [$(PROGRAMER) = "usbasp"]; then \
+avrdude  -v -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -e -U efuse:w:0xFD:m -U hfuse:w:0xDE:m -U lfuse:w:0xFF:m -U lock:w:0x0F:m ; \
+	fi	
+	avrdude  -v -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -D -u -U flash:w:$(OUT_PATH)/${TARGET}.hex:i 
+
+# Regla para flashar el bootloader con un usbasp
+flash-bootloader:
+	avrdude  -v -p ${MCU} -c usbasp -P /dev/usbasp -b ${BRATE} -e -U efuse:w:0xFD:m -U hfuse:w:0xDE:m -U lfuse:w:0xFF:m     -U lock:w:0x0F:m
+	avrdude  -v -p ${MCU} -c usbasp -P /dev/usbasp -b ${BRATE} -D -u -U flash:w:$(shell pwd)/tools/optiboot_atmega328.hex:i -U lock:w:0x0F:m
 
 # Regla para instalar las configuraciones de Udev para USBasp
 install:
