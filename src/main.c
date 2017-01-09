@@ -33,7 +33,7 @@ int main(void) {
 digitalWrite(B,5,HIGH);
 _delay_ms(100);
 digitalWrite(B,5,LOW);
-_delay_ms(100);
+_delay_ms(50);
 
 
 								}
