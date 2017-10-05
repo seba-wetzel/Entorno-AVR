@@ -1,5 +1,6 @@
 # Variables del microprocesador elegido
-MCU=atmega328p
+MCU=atmega328p #Arduino Uno/Nano/etc
+#MCU=atmega2560  #Arduino Mega
 F_CPU=16000000
 ARCH=avr
 # Variables de programacion (el baudrate depende del bootloader del arduino usado)
@@ -7,7 +8,10 @@ BRATE=115200
 # Variable del programador usado, este puede ser un arduino como un usbasp
 PROGRAMER= arduino
 # Puerto serie creado por el programador (la regla udev de usbasp genera un puerto serie en /dev/usbasp )
-PORT=/dev/ttyUSB0
+PORT=/dev/ttyACM0
+
+#bootloader para flashar  ATmegaBOOT_168_atmega328.hex o optiboot_atmega328.hex
+BOOTLOADER= ATmegaBOOT_168_atmega328.hex
 
 # Variables de compilador
 CC=$(TOOLS_PATH)/avr-gcc
@@ -38,9 +42,10 @@ all: $(TARGET)
 
 # Regla de linkeo y generacion de direcctorios de salida (si no existen)
 $(TARGET): $(OBJ_PATH)
+	@echo Creando $@... con $^
 	${CC} ${CFLAGS} -I $(INC_PATH) -o $(OUT_PATH)/$(TARGET).bin  ${SOURCES}
 	${OBJCOPY} -j .text -j .data -O ihex $(OUT_PATH)/$(TARGET).bin  $(OUT_PATH)/${TARGET}.hex
-	${SIZE} ${SFLAGS} $(OUT_PATH)/$(TARGET).bin
+	#${SIZE} ${SFLAGS} $(OUT_PATH)/$(TARGET).bin
 
 # Regla clean
 clean:
@@ -53,15 +58,12 @@ info:
 
 # Regla para flashar el micro con el programador seleccionado
 flash:
-	if [$(PROGRAMER) = "usbasp"]; then \
-avrdude  -v -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -e -U efuse:w:0xFD:m -U hfuse:w:0xDE:m -U lfuse:w:0xFF:m -U lock:w:0x0F:m ; \
-	fi	
-	avrdude  -v -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -D -u -U flash:w:$(OUT_PATH)/${TARGET}.hex:i 
+	avrdude -C ${CONF_PATH}/avrdude.conf -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -D -U flash:w:$(OUT_PATH)/${TARGET}.hex:i 
 
 # Regla para flashar el bootloader con un usbasp
 flash-bootloader:
-	avrdude  -v -p ${MCU} -c usbasp -P /dev/usbasp -b ${BRATE} -e -U efuse:w:0xFD:m -U hfuse:w:0xDE:m -U lfuse:w:0xFF:m     -U lock:w:0x0F:m
-	avrdude  -v -p ${MCU} -c usbasp -P /dev/usbasp -b ${BRATE} -D -u -U flash:w:$(shell pwd)/tools/optiboot_atmega328.hex:i -U lock:w:0x0F:m
+	avrdude -F -v -p ${MCU} -c usbasp -P /dev/usbasp -b ${BRATE} -e -U efuse:w:0xFD:m -U hfuse:w:0xDA:m -U lfuse:w:0xFF:m -U lock:w:0x0F:m
+	avrdude -F -v -p ${MCU} -c usbasp -P /dev/usbasp -b ${BRATE} -D -u -U flash:w:$(shell pwd)/tools/${BOOTLOADER}:i -U lock:w:0x0F:m
 
 # Regla para instalar las configuraciones de Udev para USBasp
 install:

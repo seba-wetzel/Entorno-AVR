@@ -1,0 +1,3 @@
+Hay que separar cada accion en distintos archivos
+por ejemplo UART no deberia estar con el manejo de los pines digitales
+
