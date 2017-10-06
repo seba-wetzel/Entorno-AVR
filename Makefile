@@ -13,39 +13,63 @@ PORT=/dev/ttyACM0
 #bootloader para flashar  ATmegaBOOT_168_atmega328.hex o optiboot_atmega328.hex
 BOOTLOADER= ATmegaBOOT_168_atmega328.hex
 
-# Variables de compilador
-CC=$(TOOLS_PATH)/avr-gcc
-OBJCOPY=$(TOOLS_PATH)/avr-objcopy
-CFLAGS=-std=c11 -Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU}
-SIZE=$(TOOLS_PATH)/avr-size
-SFLAGS=-C
 
 # Variables para generar el nombre del binario
 EJECUTABLE := $(notdir $(shell pwd))
 TARGET=$(EJECUTABLE)
 
+
+
 # Variables de directorios
-SRC_PATH := src
-INC_PATH := inc
+SRC_PATH := app/src
+SOURCES := $(wildcard $(SRC_PATH)/*.c)
+INC_PATH := -I app/inc 
 OUT_PATH := out
 OBJ_PATH := $(OUT_PATH)/obj
-SOURCES := $(wildcard $(SRC_PATH)/*.c)
-CONF_PATH= $(shell pwd)/conf
-TOOLS_PATH= $(shell pwd)/tools/$(ARCH)/bin
-OBJS := $(subst $(SRC_PATH),$(OBJ_PATH),$(SOURCES:.c=.o))
-OBJ_FILES := $(notdir $(OBJS))
+
+# Incluir los demas Makefiles
+include drivers/Makefile
+include libraries/lcd/Makefile
+include libraries/onewire/Makefile
+include libraries/ds18b20/Makefile
+
+CONF_PATH  = $(shell pwd)/conf
+TOOLS_PATH = $(shell pwd)/tools/$(ARCH)/bin
+OBJ        = out/obj
+OBJS       = $(addprefix $(OBJ)/, $(notdir $(SOURCES:.c=.o)))
+
+OBJ_FILES := $(addprefix $(shell pwd)/$(OBJ_PATH)/,$(notdir $(OBJS)))
+
 vpath %.c $(SRC_PATH)
 vpath %.o $(OBJ_PATH)
+
+
+
+# Variables de compilador
+CC=$(TOOLS_PATH)/avr-gcc
+CFLAGS=-std=c11 -Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU} $(INC_PATH)
+CFLAGOBJ= -c
+OBJCOPY=$(TOOLS_PATH)/avr-objcopy
+
+SIZE=$(TOOLS_PATH)/avr-size
+SFLAGS=-C
 
 # Regla all para compatibilizar con eclipse out of the box
 all: $(TARGET)
 
 # Regla de linkeo y generacion de direcctorios de salida (si no existen)
-$(TARGET): $(OBJ_PATH)
+$(TARGET): $(OUT_PATH) $(OBJS)
 	@echo Creando $@... con $^
-	${CC} ${CFLAGS} -I $(INC_PATH) -o $(OUT_PATH)/$(TARGET).bin  ${SOURCES}
+	${CC} ${CFLAGS} $(OBJS) -o out/$@.bin
 	${OBJCOPY} -j .text -j .data -O ihex $(OUT_PATH)/$(TARGET).bin  $(OUT_PATH)/${TARGET}.hex
-	#${SIZE} ${SFLAGS} $(OUT_PATH)/$(TARGET).bin
+	${SIZE} ${SFLAGS} $(OUT_PATH)/$(TARGET).bin
+
+$(OBJ)/%.o: %.c
+	@echo Creando $@... con $^
+	${CC} ${CFLAGS} ${CFLAGOBJ}  $< -o $@
+
+
+
 
 # Regla clean
 clean:
@@ -53,8 +77,13 @@ clean:
 
 # Make info para ver variables
 info:
-	@echo $(SOURCES)
-	@echo $(OBJS)
+	@echo Sources: $(SOURCES)
+	@echo Sources Path: $(SRC_PATH)
+	@echo Includes Paths: ${INC_PATH}
+	@echo Objets: $(OBJS)
+	@echo Objets files: ${OBJ_FILES}
+	@echo Objets Path: ${OBJ_PATH}
+	
 
 # Regla para flashar el micro con el programador seleccionado
 flash:
@@ -70,7 +99,7 @@ install:
 	sudo cp $(shell pwd)/tools/USBasp.rules /etc/udev/rules.d/ && sudo /etc/init.d/udev restart
 	
 # Pre-requisito para poder compilar, es que existan los directorios de salida, si no existen, se crean
-$(OBJ_PATH):
+$(OUT_PATH):
 	mkdir -p $(OUT_PATH)
 	mkdir -p $(OBJ_PATH)
 
