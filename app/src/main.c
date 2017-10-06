@@ -21,22 +21,22 @@ char buffer [20];
 
 // Main
 int main(void) {
-init();
-serialBegin();
-pinMode(B,5,OUTPUT);
-								
+  init();
+  serialBegin();
+  pinMode(B, 5, OUTPUT);
 
 
-// Main Loop
 
-								while (1) {
-digitalWrite(B,5,HIGH);
-_delay_ms(500);
-digitalWrite(B,5,LOW);
-_delay_ms(500);
+  // Main Loop
 
-								}
-								return 0;
+  while (1) {
+    digitalWrite(B, 5, HIGH);
+    _delay_ms(500);
+    digitalWrite(B, 5, LOW);
+    _delay_ms(500);
+
+  }
+  return 0;
 
 }
 
