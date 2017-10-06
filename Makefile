@@ -48,7 +48,7 @@ CFLAGOBJ= -c
 OBJCOPY=$(TOOLS_PATH)/avr-objcopy
 
 SIZE=$(TOOLS_PATH)/avr-size
-SFLAGS=-C
+SFLAGS=-C --mcu=${MCU} --format=avr
 
 # Regla all para compatibilizar con eclipse out of the box
 all: $(TARGET)
