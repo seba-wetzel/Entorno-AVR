@@ -30,10 +30,15 @@ int main(void) {
 // Main Loop
 
 								while (1) {
-digitalWrite(B,5,HIGH);
-_delay_ms(100);
+/*digitalWrite(B,5,HIGH);
+//_delay_ms(1);
 digitalWrite(B,5,LOW);
-_delay_ms(50);
+//_delay_ms(1);
+*/
+PORTB = 1<<5;
+_delay_ms(250);
+PORTB = 0<<5;
+_delay_ms(25);
 
 
 								}
