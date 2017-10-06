@@ -8,11 +8,11 @@ Cuenta con un Makefile para compilacion y carga del programa en el microcontrola
   2. Colocar todos los .h creados por el usuario en la carpeta /inc
   3. Abrir una terminal en la carpeta principal o raiz del proyecto
   4. Ejecutar el comando make
-  5. Ejecutar "sudo make flash" (sin las comillas) para cargar el programa en el microcontrolador.*
+  5. Ejecutar "make flash" (sin las comillas) para cargar el programa en el microcontrolador.*
 
 
 *Hay que modificar el makefile con las configuraciones propias, por ejemplo el puerto serie a utilizar y el programador.
-De usar un USBasp primero hay que instalar las reglas con el comando "make install"
+De usar un USBasp primero hay que instalar las reglas con el comando "sudo make install"
 de esta manera se crea un puerto especial usbasp. 
 
 
