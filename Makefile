@@ -1,6 +1,7 @@
 # Variables del microprocesador elegido
 MCU=atmega328p #Arduino Uno/Nano/etc
 #MCU=atmega2560  #Arduino Mega
+
 F_CPU=16000000
 ARCH=avr
 # Variables de programacion (el baudrate depende del bootloader del arduino usado)
@@ -14,11 +15,9 @@ PORT=/dev/ttyACM0
 BOOTLOADER= ATmegaBOOT_168_atmega328.hex
 
 
-# Variables para generar el nombre del binario
+# Variables para generar el nombre del binario a partir del directorio
 EJECUTABLE := $(notdir $(shell pwd))
 TARGET=$(EJECUTABLE)
-
-
 
 # Variables de directorios
 SRC_PATH := app/src
@@ -37,13 +36,10 @@ CONF_PATH  = $(shell pwd)/conf
 TOOLS_PATH = $(shell pwd)/tools/$(ARCH)/bin
 OBJ        = out/obj
 OBJS       = $(addprefix $(OBJ)/, $(notdir $(SOURCES:.c=.o)))
-
 OBJ_FILES := $(addprefix $(shell pwd)/$(OBJ_PATH)/,$(notdir $(OBJS)))
 
 vpath %.c $(SRC_PATH)
 vpath %.o $(OBJ_PATH)
-
-
 
 # Variables de compilador
 CC=$(TOOLS_PATH)/avr-gcc
@@ -68,10 +64,7 @@ $(OBJ)/%.o: %.c
 	@echo Creando $@... con $^
 	${CC} ${CFLAGS} ${CFLAGOBJ}  $< -o $@
 
-
-
-
-# Regla clean
+# Regla de limpieza
 clean:
 	rm -rf $(OUT_PATH)
 

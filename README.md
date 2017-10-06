@@ -4,7 +4,7 @@ Entorno de trabajo con todas las herramientas necesarias para trabajar en C (too
 Cuenta con un Makefile para compilacion y carga del programa en el microcontrolador target.
 
 ###Como se usa:
-  1. Trabajar sobre el archivos /src/main.c
+  1. Trabajar sobre el archivos app/src/main.c
   2. Colocar todos los .h creados por el usuario en la carpeta /inc
   3. Abrir una terminal en la carpeta principal o raiz del proyecto
   4. Ejecutar el comando make
@@ -16,7 +16,7 @@ De usar un USBasp primero hay que instalar las reglas con el comando "make insta
 de esta manera se crea un puerto especial usbasp. 
 
 
-## Libreria "simil arduino" en C
+## Libreria "simil arduino" en C (Intente seguir la API de arduino hasta donde me parece logico)
 
 Se incluye una libreria para el manejo de los puertos I/O con funciones similares a las de arduino.
 La diferencia es que estas funciones son agnosticas a la placa, son de mas bajo nivel, ya que se manejan con el puerto y pin del microcontrolador.
