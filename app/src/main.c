@@ -12,7 +12,7 @@
 // Variables
 
 
-char buffer [20];
+char buffer [] = "Hola mundo!";
 
 
 // User Funtions Prototypes
@@ -34,7 +34,7 @@ digitalWrite(B,5,HIGH);
 _delay_ms(500);
 digitalWrite(B,5,LOW);
 _delay_ms(500);
-
+puts(buffer);
 								}
 								return 0;
 

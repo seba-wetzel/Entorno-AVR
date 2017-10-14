@@ -3,7 +3,7 @@
 #include "arduino.h"
 
 #ifndef BAUD
-#define BAUD 9600
+#define BAUD 57600
 #endif
 #include <util/setbaud.h>
 
