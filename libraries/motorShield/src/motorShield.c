@@ -1,10 +1,44 @@
 #include "motorShield.h"
 
+static sipo_u sipoU;
+
+
 void shieldInit(sipo_u sipo){
-	pinMode(sipo.data.port,  sipo.data.pin, OUTPUT);
-	pinMode(sipo.clock.port, sipo.clock.pin,OUTPUT);
-	pinMode(sipo.latch.port, sipo.latch.pin, OUTPUT);
+								pinMode(sipo.data.port,  sipo.data.pin, OUTPUT);
+								pinMode(sipo.clock.port, sipo.clock.pin,OUTPUT);
+								pinMode(sipo.latch.port, sipo.latch.pin, OUTPUT);
+                sipoU = sipo;
+
 }
+
+
+void motorRun(motor_e motor,movement_e movement){
+								static uint8_t byte_u = 0b00000000;
+								uint8_t a,b;
+
+								switch (motor) {
+								case M1: a = MOTOR1_A; b = MOTOR1_B;
+																break;
+								case M2: a = MOTOR2_A; b = MOTOR2_B;
+																break;
+								case M3: a = MOTOR3_A; b = MOTOR3_B;
+																break;
+								case M4: a = MOTOR4_A; b = MOTOR4_B;
+																break;
+								}
+
+								switch (movement) {
+								case FORWARD:  byte_u |= (1<<_BV(a)) | (0<<_BV(b));
+																break;
+								case BACKWARD: byte_u |= (0<<_BV(a)) | (1<<_BV(b));
+																break;
+								case BRAKE:    byte_u |= (0<<_BV(a)) | (0<<_BV(b));
+																break;
+								}
+
+								shiftOut(sipoU,byte_u);
+
+};
 
 void shiftOut(sipo_u sipo, uint8_t val){
 								for (uint8_t i = 0; i < 8; i++)  {
@@ -12,6 +46,10 @@ void shiftOut(sipo_u sipo, uint8_t val){
 																digitalWrite(sipo.clock.port, sipo.clock.pin, HIGH);
 																digitalWrite(sipo.clock.port, sipo.clock.pin, LOW);
 								}
+								shiftOutLatch(sipo);
+}
+
+void shiftOutLatch(sipo_u sipo){
 								digitalWrite(sipo.latch.port, sipo.latch.pin, HIGH);
 								digitalWrite(sipo.latch.port, sipo.latch.pin, LOW);
 }
