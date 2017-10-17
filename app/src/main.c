@@ -25,10 +25,11 @@ sipo_u sipo = {
 };
 
 motors_s motores [] = {
-	{M4,{D,6}},
-	{M3,{D,5}},
-	{M2,{D,3}},
-	{M1,{B,3}}
+								{M3,{D,5}},
+								{M4,{D,6}},
+								{M3,{D,5}},
+								{M2,{D,3}},
+								{M1,{B,3}}
 };
 uint8_t cantidad_motores = sizeof(motores)/5;
 // Main
@@ -36,7 +37,7 @@ int main(void) {
 								init();
 								serialBegin();
 								pinMode(B,5,OUTPUT);  //Pin 13 de arduino (el del led)
-								shieldInit(sipo, &motores, 1);
+								shieldInit(sipo, &motores, cantidad_motores);
 
 
 
@@ -45,9 +46,11 @@ int main(void) {
 
 								while (1) {
 																digitalWrite(B,5,HIGH);
-																motorRun(M4,FORWARD);
+																motorRun(M3,FORWARD);
 																_delay_ms(2500);
-																motorRun(M4,BACKWARD);
+																motorRun(M3,BACKWARD);
+																_delay_ms(2500);
+																motorRun(M3,BRAKE);
 																_delay_ms(2500);
 																puts(buffer);
 
