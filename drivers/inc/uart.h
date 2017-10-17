@@ -11,8 +11,8 @@
 extern FILE uart_output;
 extern FILE uart_input;
 
-#ifndef UART0_H_
-#define UART0_H_
+#ifndef UART_H_
+#define UART_H_
 
 int uart_putchar(char c, FILE *stream);
 int uart_getchar(FILE *stream);
