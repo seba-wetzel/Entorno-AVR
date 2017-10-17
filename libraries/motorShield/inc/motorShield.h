@@ -21,27 +21,30 @@ typedef enum {
         M4
 }motor_e;
 
+typedef struct{
+  motor_e motor;
+  pins_s pin;
+}motors_s;
+
 typedef enum {
         FORWARD,
         BACKWARD,
         BRAKE
 }movement_e;
 
-typedef struct {
-        port_u port;
-        uint8_t pin;
-} pins_s;
+
 
 typedef struct {
         pins_s data;
         pins_s clock;
         pins_s latch;
+        pins_s enable;
 } sipo_u;
 
 //Prototipos de funciones
 void motorRun(motor_e,movement_e);
 
-void shieldInit(sipo_u);
+void shieldInit(sipo_u, motors_s *, uint8_t);
 void shiftOut(sipo_u, uint8_t val);
 void shiftOutLatch(sipo_u);
 

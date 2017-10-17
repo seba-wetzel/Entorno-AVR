@@ -37,6 +37,11 @@ typedef enum {
         OUTPUT = 1,
 } IO_u;
 
+typedef struct {
+        port_u port;
+        uint8_t pin;
+} pins_s;
+
 void init();
 // Definiciones de puerto serie
 
