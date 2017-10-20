@@ -43,7 +43,7 @@ include libraries/ds18b20/Makefile
 
 
 CONF_PATH  = $(shell pwd)/conf
-TOOLS_PATH = $(shell pwd)/tools/$(ARCH)/bin
+TOOLS_PATH = $(shell pwd)/tools/$(SYSTEM)/$(ARCH)/bin
 OBJ        = out/obj
 OBJS       = $(addprefix $(OBJ)/, $(notdir $(SOURCES:.c=.o)))
 OBJ_FILES := $(addprefix $(shell pwd)$(OBJ_PATH)/,$(notdir $(OBJS)))
@@ -80,7 +80,7 @@ clean:
 
 # Make info para ver variables
 info:
-	@echo Host System: $(SYSTEM)     $(OS)
+	@echo Host System: $(SYSTEM)
 	@echo Sources: $(SOURCES)
 	@echo Sources Path: $(SRC_PATH)
 	@echo Includes Paths: ${INC_PATH}
