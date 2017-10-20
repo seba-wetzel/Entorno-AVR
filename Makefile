@@ -22,7 +22,7 @@ TARGET=$(EJECUTABLE)
 # Variables de directorios
 SRC_PATH := app/src
 SOURCES := $(wildcard $(SRC_PATH)/*.c)
-INC_PATH := -I app/inc 
+INC_PATH := -I app/inc
 OUT_PATH := out
 OBJ_PATH := $(OUT_PATH)/obj
 
@@ -70,17 +70,18 @@ clean:
 
 # Make info para ver variables
 info:
+	@echo Host System: $(OS)
 	@echo Sources: $(SOURCES)
 	@echo Sources Path: $(SRC_PATH)
 	@echo Includes Paths: ${INC_PATH}
 	@echo Objets: $(OBJS)
 	@echo Objets files: ${OBJ_FILES}
 	@echo Objets Path: ${OBJ_PATH}
-	
+
 
 # Regla para flashar el micro con el programador seleccionado
 flash:
-	avrdude -C ${CONF_PATH}/avrdude.conf -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -D -U flash:w:$(OUT_PATH)/${TARGET}.hex:i 
+	avrdude -C ${CONF_PATH}/avrdude.conf -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -D -U flash:w:$(OUT_PATH)/${TARGET}.hex:i
 
 # Regla para flashar el bootloader con un usbasp
 flash-bootloader:
@@ -90,9 +91,8 @@ flash-bootloader:
 # Regla para instalar las configuraciones de Udev para USBasp
 install:
 	sudo cp $(shell pwd)/tools/USBasp.rules /etc/udev/rules.d/ && sudo /etc/init.d/udev restart
-	
+
 # Pre-requisito para poder compilar, es que existan los directorios de salida, si no existen, se crean
 $(OUT_PATH):
 	mkdir -p $(OUT_PATH)
 	mkdir -p $(OBJ_PATH)
-
