@@ -1,3 +1,4 @@
 /out
-.arduino.h.swp
-
+/tools/Linux/avr/*
+/tools/Windows/avr/*
+*.swp

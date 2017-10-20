@@ -19,6 +19,15 @@ BOOTLOADER= ATmegaBOOT_168_atmega328.hex
 EJECUTABLE := $(notdir $(shell pwd))
 TARGET=  $(OUT_PATH)/$(EJECUTABLE)
 
+# Variable para conocer el sistema del Host
+ifeq ($(OS),Windows_NT)
+    SYSTEM = Windows
+
+else
+    SYSTEM = $(shell uname -s)
+
+endif
+
 # Variables de directorios
 SRC_PATH := app/src
 SOURCES := $(wildcard $(SRC_PATH)/*.c)
@@ -33,11 +42,11 @@ include drivers/Makefile
 #include libraries/ds18b20/Makefile
 include libraries/motorShield/Makefile
 
+
 CONF_PATH  = $(shell pwd)/conf
-TOOLS_PATH = $(shell pwd)/tools/$(ARCH)/bin
+TOOLS_PATH = $(shell pwd)/tools/$(SYSTEM)/$(ARCH)/bin
 OBJ        = out/obj
 OBJS       = $(addprefix $(OBJ)/, $(notdir $(SOURCES:.c=.o)))
-
 
 vpath %.c $(SRC_PATH)
 vpath %.o $(OBJ_PATH)
@@ -45,7 +54,7 @@ vpath %.o $(OBJ_PATH)
 
 # Variables de compilador
 CC=$(TOOLS_PATH)/avr-gcc
-CFLAGS=-std=c11 -Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU} $(INC_PATH)
+CFLAGS= -std=c11 -Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU} $(INC_PATH)
 CFLAGOBJ= -c
 OBJCOPY=$(TOOLS_PATH)/avr-objcopy
 
@@ -73,6 +82,7 @@ clean:
 
 # Make info para ver variables
 info:
+	@echo Host System: $(SYSTEM)
 	@echo Sources: $(SOURCES)
 	@echo Sources Path: $(SRC_PATH)
 	@echo Includes Paths: ${INC_PATH}
@@ -84,6 +94,7 @@ info:
 # Regla para flashar el micro con el programador seleccionado
 flash:
 	avrdude -C ${CONF_PATH}/avrdude.conf -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -D -U flash:w:$(OUT_PATH)/${EJECUTABLE}.hex:i
+
 
 # Regla para flashar el bootloader con un usbasp
 flash-bootloader:

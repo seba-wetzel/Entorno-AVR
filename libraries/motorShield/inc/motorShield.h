@@ -1,7 +1,7 @@
 #ifndef MOTORSHIELD_H
 #define MOTORSHIELD_H
 
-#include "arduino.h"
+#include "Arduino.h"
 
 
 // Bit positions in the 74HCT595 shift register output
