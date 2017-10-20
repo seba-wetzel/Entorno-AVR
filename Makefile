@@ -17,7 +17,7 @@ BOOTLOADER= ATmegaBOOT_168_atmega328.hex
 
 # Variables para generar el nombre del binario a partir del directorio
 EJECUTABLE := $(notdir $(shell pwd))
-TARGET=$(EJECUTABLE)
+TARGET=  $(OUT_PATH)/$(EJECUTABLE)
 
 # Variable para conocer el sistema del Host
 ifeq ($(OS),Windows_NT)
@@ -39,17 +39,18 @@ OBJ_PATH := $(OUT_PATH)/obj
 include drivers/Makefile
 include libraries/lcd/Makefile
 include libraries/onewire/Makefile
-include libraries/ds18b20/Makefile
+#include libraries/ds18b20/Makefile
+include libraries/motorShield/Makefile
 
 
 CONF_PATH  = $(shell pwd)/conf
 TOOLS_PATH = $(shell pwd)/tools/$(SYSTEM)/$(ARCH)/bin
 OBJ        = out/obj
 OBJS       = $(addprefix $(OBJ)/, $(notdir $(SOURCES:.c=.o)))
-OBJ_FILES := $(addprefix $(shell pwd)$(OBJ_PATH)/,$(notdir $(OBJS)))
 
 vpath %.c $(SRC_PATH)
 vpath %.o $(OBJ_PATH)
+
 
 # Variables de compilador
 CC=$(TOOLS_PATH)/avr-gcc
@@ -63,12 +64,13 @@ SFLAGS=-C --mcu=${MCU} --format=avr
 # Regla all para compatibilizar con eclipse out of the box
 all: $(TARGET)
 
+
 # Regla de linkeo y generacion de direcctorios de salida (si no existen)
-$(TARGET): $(OUT_PATH) $(OBJS)
+$(TARGET): $(OUT_PATH) | $(OBJS)
 	@echo Creando $@... con $^
-	${CC} ${CFLAGS} $(OBJS) -o out/$@.bin
-	${OBJCOPY} -j .text -j .data -O ihex $(OUT_PATH)/$(TARGET).bin  $(OUT_PATH)/${TARGET}.hex
-	${SIZE} ${SFLAGS} $(OUT_PATH)/$(TARGET).bin
+	${CC} ${CFLAGS} $(OBJS) -o $@
+	${OBJCOPY} -j .text -j .data -O ihex $(TARGET)  $(OUT_PATH)/${EJECUTABLE}.hex
+	${SIZE} ${SFLAGS} $(TARGET)
 
 $(OBJ)/%.o: %.c
 	@echo Creando $@... con $^
@@ -85,13 +87,14 @@ info:
 	@echo Sources Path: $(SRC_PATH)
 	@echo Includes Paths: ${INC_PATH}
 	@echo Objets: $(OBJS)
-	@echo Objets files: ${OBJ_FILES}
+
 	@echo Objets Path: ${OBJ_PATH}
 
 
 # Regla para flashar el micro con el programador seleccionado
 flash:
-	avrdude -C ${CONF_PATH}/avrdude.conf -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -D -U flash:w:$(OUT_PATH)/${TARGET}.hex:i
+	avrdude -C ${CONF_PATH}/avrdude.conf -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -D -U flash:w:$(OUT_PATH)/${EJECUTABLE}.hex:i
+
 
 # Regla para flashar el bootloader con un usbasp
 flash-bootloader:
