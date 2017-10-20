@@ -28,8 +28,8 @@ OBJ_PATH := $(OUT_PATH)/obj
 
 # Incluir los demas Makefiles
 include drivers/Makefile
-include libraries/lcd/Makefile
-include libraries/onewire/Makefile
+#include libraries/lcd/Makefile
+#include libraries/onewire/Makefile
 #include libraries/ds18b20/Makefile
 include libraries/motorShield/Makefile
 

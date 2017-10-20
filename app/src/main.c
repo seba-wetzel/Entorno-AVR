@@ -54,15 +54,8 @@ int main(void) {
 																_delay_ms(2500);
 																puts(buffer);
 
-  while (1) {
-    digitalWrite(B, 5, HIGH);
-    _delay_ms(500);
-    digitalWrite(B, 5, LOW);
-    _delay_ms(500);
-
-  }
   return 0;
 
 }
-
+}
 // User Funtiones

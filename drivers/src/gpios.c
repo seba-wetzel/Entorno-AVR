@@ -1,6 +1,6 @@
 #include <avr/io.h>
 #include <stdio.h>
-#include <gpios.h>
+#include <Arduino.h>
 
 
 /*Funciones para el manejo de puertos de entrada/salida que

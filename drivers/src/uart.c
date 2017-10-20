@@ -1,6 +1,6 @@
 #include <avr/io.h>
 #include <stdio.h>
-#include <uart.h>
+#include <Arduino.h>
 
 
 #ifndef BAUD

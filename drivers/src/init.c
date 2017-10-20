@@ -1,6 +1,6 @@
 #include <avr/io.h>
 #include <stdio.h>
-#include <init.h>
+#include <Arduino.h>
 
 
 /* Funcion para inicializar los puertos como entrada. */
