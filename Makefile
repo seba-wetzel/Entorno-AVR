@@ -53,7 +53,7 @@ vpath %.o $(OBJ_PATH)
 
 # Variables de compilador
 CC=$(TOOLS_PATH)/avr-gcc
-CFLAGS=-std=c11 -Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU} $(INC_PATH)
+CFLAGS= -std=c++0x -Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU} $(INC_PATH)
 CFLAGOBJ= -c
 OBJCOPY=$(TOOLS_PATH)/avr-objcopy
 
