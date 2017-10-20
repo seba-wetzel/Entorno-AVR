@@ -1,1 +1,4 @@
 /out
+/tools/Linux/avr/*
+/tools/Windows/avr/*
+*.swp
