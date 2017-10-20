@@ -8,6 +8,10 @@
 #include <string.h>
 #include <stdio.h>
 
+#ifndef ARDUINO_H
+#define ARDUINO_H
+
+
 // Prototipos de funciones serial
 int uart_putchar(char c, FILE *stream);
 int uart_getchar(FILE *stream);
@@ -33,6 +37,11 @@ typedef enum {
         OUTPUT = 1,
 } IO_u;
 
+typedef struct {
+        port_u port;
+        uint8_t pin;
+} pins_s;
+
 void init();
 // Definiciones de puerto serie
 
@@ -41,3 +50,6 @@ void init();
 void digitalWrite(port_u puerto,const int pin, estado_u estado);
 void pinMode (port_u puerto,const int pin, IO_u tipo);
 estado_u digitalRead (port_u puerto,const int pin);
+
+
+#endif
