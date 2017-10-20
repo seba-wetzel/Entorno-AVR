@@ -5,7 +5,7 @@
 // Self Inlude
 #include "main.h"
 // Libraries Includes
-#include "arduino.h"
+#include "Arduino.h"
 #include "motorShield.h"
 
 
@@ -56,10 +56,8 @@ int main(void) {
 																puts(buffer);
 
 
- 
+
   }
   return 0;
 
 }
-}
-// User Funtiones
