@@ -22,42 +22,42 @@ TARGET=$(EJECUTABLE)
 # Variable para conocer el sistema del Host
 ifeq ($(OS),Windows_NT)
     SYSTEM = Windows
-		CD := \
+
 else
     SYSTEM = $(shell uname -s)
-		CD := /
+
 endif
 
 # Variables de directorios
-SRC_PATH := app$(CD)src
-SOURCES := $(wildcard $(SRC_PATH)$(CD)*.c)
-INC_PATH := -I app$(CD)inc
+SRC_PATH := appsrc
+SOURCES := $(wildcard $(SRC_PATH)/*.c)
+INC_PATH := -I app/inc
 OUT_PATH := out
-OBJ_PATH := $(OUT_PATH)$(CD)obj
+OBJ_PATH := $(OUT_PATH)/obj
 
 # Incluir los demas Makefiles
-include drivers$(CD)Makefile
-include libraries$(CD)lcd$(CD)Makefile
-include libraries$(CD)onewire$(CD)Makefile
-include libraries$(CD)ds18b20$(CD)Makefile
+include drivers/Makefile
+include libraries/lcd/Makefile
+include libraries/onewire/Makefile
+include libraries/ds18b20/Makefile
 
 
-CONF_PATH  = $(shell pwd)$(CD)conf
-TOOLS_PATH = $(shell pwd)$(CD)tools$(CD)$(ARCH)$(CD)bin
-OBJ        = out$(CD)obj
-OBJS       = $(addprefix $(OBJ)$(CD), $(notdir $(SOURCES:.c=.o)))
-OBJ_FILES := $(addprefix $(shell pwd)$(OBJ_PATH)$(CD),$(notdir $(OBJS)))
+CONF_PATH  = $(shell pwd)/conf
+TOOLS_PATH = $(shell pwd)/tools/$(ARCH)/bin
+OBJ        = out/obj
+OBJS       = $(addprefix $(OBJ)/, $(notdir $(SOURCES:.c=.o)))
+OBJ_FILES := $(addprefix $(shell pwd)$(OBJ_PATH)/,$(notdir $(OBJS)))
 
 vpath %.c $(SRC_PATH)
 vpath %.o $(OBJ_PATH)
 
 # Variables de compilador
-CC=$(TOOLS_PATH)$(CD)avr-gcc
+CC=$(TOOLS_PATH)/avr-gcc
 CFLAGS=-std=c11 -Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU} $(INC_PATH)
 CFLAGOBJ= -c
-OBJCOPY=$(TOOLS_PATH)$(CD)avr-objcopy
+OBJCOPY=$(TOOLS_PATH)/avr-objcopy
 
-SIZE=$(TOOLS_PATH)$(CD)avr-size
+SIZE=$(TOOLS_PATH)/avr-size
 SFLAGS=-C --mcu=${MCU} --format=avr
 
 # Regla all para compatibilizar con eclipse out of the box
@@ -66,11 +66,11 @@ all: $(TARGET)
 # Regla de linkeo y generacion de direcctorios de salida (si no existen)
 $(TARGET): $(OUT_PATH) $(OBJS)
 	@echo Creando $@... con $^
-	${CC} ${CFLAGS} $(OBJS) -o out$(CD)$@.bin
-	${OBJCOPY} -j .text -j .data -O ihex $(OUT_PATH)$(CD)$(TARGET).bin  $(OUT_PATH)$(CD)${TARGET}.hex
-	${SIZE} ${SFLAGS} $(OUT_PATH)$(CD)$(TARGET).bin
+	${CC} ${CFLAGS} $(OBJS) -o out/$@.bin
+	${OBJCOPY} -j .text -j .data -O ihex $(OUT_PATH)/$(TARGET).bin  $(OUT_PATH)/${TARGET}.hex
+	${SIZE} ${SFLAGS} $(OUT_PATH)/$(TARGET).bin
 
-$(OBJ)$(CD)%.o: %.c
+$(OBJ)/%.o: %.c
 	@echo Creando $@... con $^
 	${CC} ${CFLAGS} ${CFLAGOBJ}  $< -o $@
 
@@ -91,7 +91,7 @@ info:
 
 # Regla para flashar el micro con el programador seleccionado
 flash:
-	avrdude -C ${CONF_PATH}$(CD)avrdude.conf -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -D -U flash:w:$(OUT_PATH)$(CD)${TARGET}.hex:i
+	avrdude -C ${CONF_PATH}/avrdude.conf -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -D -U flash:w:$(OUT_PATH)/${TARGET}.hex:i
 
 # Regla para flashar el bootloader con un usbasp
 flash-bootloader:
@@ -100,7 +100,7 @@ flash-bootloader:
 
 # Regla para instalar las configuraciones de Udev para USBasp
 install:
-	sudo cp $(shell pwd)/tools/USBasp.rules /etc/udev/rules.d/ && sudo /etc/init.d$(CD)udev restart
+	sudo cp $(shell pwd)/tools/USBasp.rules /etc/udev/rules.d/ && sudo /etc/init.d/udev restart
 
 # Pre-requisito para poder compilar, es que existan los directorios de salida, si no existen, se crean
 $(OUT_PATH):
