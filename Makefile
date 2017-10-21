@@ -9,7 +9,7 @@ BRATE=115200
 # Variable del programador usado, este puede ser un arduino como un usbasp
 PROGRAMER= arduino
 # Puerto serie creado por el programador (la regla udev de usbasp genera un puerto serie en /dev/usbasp )
-PORT=COM3
+PORT=/dev/ttyACM0
 
 #bootloader para flashar  ATmegaBOOT_168_atmega328.hex o optiboot_atmega328.hex
 BOOTLOADER= ATmegaBOOT_168_atmega328.hex
@@ -93,7 +93,7 @@ info:
 
 # Regla para flashar el micro con el programador seleccionado
 flash:
-	avrdude -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -D -U flash:w:$(OUT_PATH)/${EJECUTABLE}.hex:i
+	avrdude -C ${CONF_PATH}/avrdude.conf -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -D -U flash:w:$(OUT_PATH)/${EJECUTABLE}.hex:i
 
 
 # Regla para flashar el bootloader con un usbasp
