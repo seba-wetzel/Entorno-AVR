@@ -93,7 +93,7 @@ info:
 
 # Regla para flashar el micro con el programador seleccionado
 flash:
-	avrdude -C ${CONF_PATH}/avrdude.conf -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -D -U flash:w:$(OUT_PATH)/${EJECUTABLE}.hex:i
+	avrdude -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -D -U flash:w:$(OUT_PATH)/${EJECUTABLE}.hex:i
 
 
 # Regla para flashar el bootloader con un usbasp
