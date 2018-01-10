@@ -35,9 +35,9 @@ void motorRun(motor_e motor,movement_e movement){
 								}
 
 								switch (movement) {
-								case FORWARD:  byte_u &= ~_BV(a); byte_u |= _BV(b); // byte_u &= (1<<_BV(a));  byte_u &= (0<<_BV(b)); //
+								case FORWARD:  byte_u &= ~_BV(a); byte_u |= _BV(b); 
 																break;
-								case BACKWARD: byte_u |= _BV(a);  byte_u &= ~_BV(b); // byte_u &= (0<<_BV(a));  byte_u &=  (1<<_BV(b)); //
+								case BACKWARD: byte_u |= _BV(a);  byte_u &= ~_BV(b); 
 																break;
 								case BRAKE:    byte_u &= ~_BV(a); byte_u &= ~_BV(b);
 																break;

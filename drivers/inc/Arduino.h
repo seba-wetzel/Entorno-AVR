@@ -42,6 +42,29 @@ typedef struct {
         uint8_t pin;
 } pins_s;
 
+//Definition of timers (add more if is needed or supported)
+typedef enum{
+  timer0,
+  timer1,
+  timer2
+} timers_e;
+
+//Definition of prescalers (add more if is needed or supported)
+typedef enum {
+  p0    =0b000,
+  p1    =0b001,
+  p8    =0b010,
+  p64   =0b011,
+  p256  =0b100,
+  p1024 =0b101
+} prescaler_e;
+
+//Estructura de timer0
+typedef struct{
+  timers_e,
+  prescaler_e
+} timmer_s;
+
 void init();
 // Definiciones de puerto serie
 
@@ -50,6 +73,15 @@ void init();
 void digitalWrite(port_u puerto,const int pin, estado_u estado);
 void pinMode (port_u puerto,const int pin, IO_u tipo);
 estado_u digitalRead (port_u puerto,const int pin);
+
+//Prototipos de funciones de timmers
+void timerConfig(timer_s);
+uint32_t millis (void);
+
+//Prototipos de funciones de ADC
+void analogConfig(void);
+void analogWrite(void);
+
 
 
 #endif
