@@ -1,4 +1,5 @@
 /out
-/tools/Linux/avr/*
-/tools/Windows/avr/*
+tools/Linux/avr/*
+tools/Windows/avr/*
 *.swp
+/.vscode

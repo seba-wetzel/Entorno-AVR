@@ -59,10 +59,19 @@ typedef enum {
   p1024 =0b101
 } prescaler_e;
 
+//Mode of the timer
+typedef enum{
+  NORMAL, //Run t'll reach the max and reset, no counter clear is performed
+          //(0xFF for timer0 and timer2, or 0xFFF for timer1)
+  CTC, //Reset to Zero when timmer reach TCNTx
+  PWM
+
+}mode_e;
+
 //Estructura de timer0
 typedef struct{
-  timers_e,
-  prescaler_e
+  timers_e timer,
+  prescaler_e prescaler
 } timmer_s;
 
 void init();
