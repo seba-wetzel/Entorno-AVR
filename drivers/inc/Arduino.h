@@ -61,18 +61,25 @@ typedef enum {
 
 //Mode of the timer
 typedef enum{
-  NORMAL, //Run t'll reach the max and reset, no counter clear is performed
-          //(0xFF for timer0 and timer2, or 0xFFF for timer1)
-  CTC, //Reset to Zero when timmer reach TCNTx
-  PWM
-
+  NORMAL = 0b000, //Run t'll reach the max and reset, no counter clear is performed(0xFF for timer0 and timer2, or 0xFFF for timer1)
+  CTC    = 0b010, //Reset to Zero when timmer reach TCNTx
 }mode_e;
 
-//Estructura de timer0
+typedef enum{
+  none          = 0b000,
+  overflow      = 0b001,
+  compareMatchA = 0b010,
+  compareMatchB = 0b100,
+  inputCapture
+} event_e;
+
+//Estructura de timer
 typedef struct{
-  timers_e timer,
-  prescaler_e prescaler
-} timmer_s;
+  timers_e timer;
+  prescaler_e  prescaler;
+  mode_e mode;
+  event_e event;
+} timer_s;
 
 void init();
 // Definiciones de puerto serie
@@ -85,6 +92,7 @@ estado_u digitalRead (port_u puerto,const int pin);
 
 //Prototipos de funciones de timmers
 void timerConfig(timer_s);
+//void timer1_OF(void);
 uint32_t millis (void);
 
 //Prototipos de funciones de ADC
