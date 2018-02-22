@@ -69,8 +69,7 @@ typedef enum{
   none          = 0b000,
   overflow      = 0b001,
   compareMatchA = 0b010,
-  compareMatchB = 0b100,
-  inputCapture
+  compareMatchB = 0b100 // inputCapture
 } event_e;
 
 //Estructura de timer
@@ -92,7 +91,7 @@ estado_u digitalRead (port_u puerto,const int pin);
 
 //Prototipos de funciones de timmers
 void timerConfig(timer_s);
-//void timer1_OF(void);
+
 uint32_t millis (void);
 
 //Prototipos de funciones de ADC
