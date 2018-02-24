@@ -1,7 +1,15 @@
+/*!
+   \file "Arduino.h"
+   \brief "C header with Arduino like API functions"
+   \author "Sebastian Wetzel"
+   \date "23"/"febrero"/"2018"
+*/
+
 // AVR Inludes
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/delay.h>
+#include <avr/sfr_defs.h>
 
 // Standard Includes
 #include <stdlib.h>
@@ -11,6 +19,15 @@
 #ifndef ARDUINO_H
 #define ARDUINO_H
 
+#ifndef F_CPU
+#define F_CPU 16000000UL
+#endif
+
+#ifndef sbi
+#define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
+#endif
+
+#define noInterrupts() cli()
 
 // Prototipos de funciones serial
 int uart_putchar(char c, FILE *stream);
@@ -42,27 +59,31 @@ typedef struct {
         uint8_t pin;
 } pins_s;
 
-//Definition of timers (add more if is needed or supported)
+/**
+ *Definition of timers (add more if is needed or supported)
+ */
 typedef enum{
-  timer0,
-  timer1,
-  timer2
+  timer0, /**< Timer0 in atmega328, a 8bit timer */
+  timer1, /**< Timer1 in atmega328, a 16bit timer */
+  timer2 /**< Timer2 in atmega328, a 8bit timer */
 } timers_e;
 
-//Definition of prescalers (add more if is needed or supported)
-typedef enum {
-  p0    =0b000,
-  p1    =0b001,
-  p8    =0b010,
-  p64   =0b011,
-  p256  =0b100,
-  p1024 =0b101
+/**
+ * Definition of prescalers (add more if is needed or supported)
+ */
+ typedef enum {
+  p0    =0b000, /**< No prescaler, desactivated timer */
+  p1    =0b001, /**< Prescaler in 1, same clock speed, no divider */
+  p8    =0b010, /**< Prescaler divide clock by 8 */
+  p64   =0b011, /**< Prescaler divide clock by 64 */
+  p256  =0b100, /**< Prescaler divide clock by 265 */
+  p1024 =0b101 /**< Prescaler divide clok by 1024 */
 } prescaler_e;
 
 //Mode of the timer
 typedef enum{
-  NORMAL = 0b000, //Run t'll reach the max and reset, no counter clear is performed(0xFF for timer0 and timer2, or 0xFFF for timer1)
-  CTC    = 0b010, //Reset to Zero when timmer reach TCNTx
+  NORMAL = 0b000, /**< Run t'll reach the max and reset, no counter clear is performed(0xFF for timer0 and timer2, or 0xFFF for timer1) */
+  CTC    = 0b010, /**< Reset to Zero when timmer reach TCNTx */
 }mode_e;
 
 typedef enum{
@@ -91,9 +112,9 @@ void pinMode (port_u puerto,const int pin, IO_u tipo);
 estado_u digitalRead (port_u puerto,const int pin);
 
 //Prototipos de funciones de timmers
-void timerConfig(timer_s);
-//void timer1_OF(void);
-uint32_t millis (void);
+void timerConfigHAL(timer_s);
+
+uint32_t millisHAL (void);
 
 //Prototipos de funciones de ADC
 void analogConfig(void);

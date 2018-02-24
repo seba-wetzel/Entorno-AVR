@@ -1,5 +1,7 @@
 /out
+/doc
 /tools/Linux/avr/*
 /tools/Windows/avr/*
 *.swp
 /.vscode
+*.gch

@@ -5,11 +5,11 @@ MCU=atmega328p #Arduino Uno/Nano/etc
 F_CPU=16000000
 ARCH=avr
 # Variables de programacion (el baudrate depende del bootloader del arduino usado)
-BRATE=115200
+BRATE=57600
 # Variable del programador usado, este puede ser un arduino como un usbasp
 PROGRAMER= arduino
 # Puerto serie creado por el programador (la regla udev de usbasp genera un puerto serie en /dev/usbasp )
-PORT=/dev/ttyACM0
+PORT=/dev/ttyUSB0
 
 #bootloader para flashar  ATmegaBOOT_168_atmega328.hex o optiboot_atmega328.hex
 BOOTLOADER= ATmegaBOOT_168_atmega328.hex
@@ -41,6 +41,7 @@ include drivers/Makefile
 #include libraries/onewire/Makefile
 #include libraries/ds18b20/Makefile
 include libraries/motorShield/Makefile
+include libraries/freeRTOS/Makefile
 
 
 CONF_PATH  = $(shell pwd)/conf
@@ -54,12 +55,13 @@ vpath %.o $(OBJ_PATH)
 
 # Variables de compilador
 CC=$(TOOLS_PATH)/avr-gcc
-CFLAGS= -std=c11 -Wall -g -Os -mmcu=${MCU} -DF_CPU=${F_CPU} $(INC_PATH)
+CFLAGS= -g -Os  -std=gnu11 -ffunction-sections -fdata-sections -MMD -flto -fno-fat-lto-objects -Wall -mmcu=${MCU} -DF_CPU=${F_CPU} $(INC_PATH)
 CFLAGOBJ= -c
 OBJCOPY=$(TOOLS_PATH)/avr-objcopy
 
 SIZE=$(TOOLS_PATH)/avr-size
 SFLAGS=-C --mcu=${MCU} --format=avr
+FLASHER= ${TOOLS_PATH}/avrdude
 
 # Regla all para compatibilizar con eclipse out of the box
 all: $(TARGET)
@@ -93,7 +95,7 @@ info:
 
 # Regla para flashar el micro con el programador seleccionado
 flash:
-	avrdude -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -D -U flash:w:$(OUT_PATH)/${EJECUTABLE}.hex:i
+	${FLASHER} -C /opt/arduino/hardware/tools/avr/etc/avrdude.conf -v -p ${MCU} -c $(PROGRAMER) -P ${PORT} -b ${BRATE} -D -U flash:w:$(OUT_PATH)/${EJECUTABLE}.hex:i
 
 
 # Regla para flashar el bootloader con un usbasp
