@@ -90,8 +90,7 @@ typedef enum{
   none          = 0b000,
   overflow      = 0b001,
   compareMatchA = 0b010,
-  compareMatchB = 0b100,
-  inputCapture
+  compareMatchB = 0b100 // inputCapture
 } event_e;
 
 //Estructura de timer
